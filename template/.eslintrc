@@ -1,0 +1,75 @@
+/**
+ * General Info
+ *
+ * 0 - turn the rule off
+ * 1 - turn the rule on as a warning (doesn't affect exit code)
+ * 2 - turn the rule on as an error (exit code is 1 when triggered)
+ *
+ * eslint recommends certain things; see http://eslint.org/docs/rules/ for extends:"eslint:recommend" meaning
+ *
+ * For more information about the react plugin, see https://github.com/yannickcr/eslint-plugin-react
+ *
+ */
+
+{
+  "parser": "babel-eslint",
+  "rules": {
+    /****
+     * CODE RULES
+     **/
+    "quotes": [
+      2,
+      "single"
+    ],
+    "semi": [
+      2,
+      "always"
+    ],
+    "strict": [
+      2,
+      "never"
+    ],
+    "no-console": 1,
+    "no-unused-vars": 1,
+    "curly": 2,
+    /****
+     * WHITESPACE RULES
+     * operator-linebreak
+     **/
+    "linebreak-style": [
+      2,
+      "unix"
+    ],
+    "indent": [
+      2,
+      2,
+      {"SwitchCase": 1}
+    ],
+    "block-spacing": 2,
+    "key-spacing": 2,
+    "no-multiple-empty-lines": 2,
+    "brace-style": [2, "1tbs", {"allowSingleLine": false}],
+    "no-spaced-func": 2,
+    "no-trailing-spaces": 2,
+    "space-infix-ops": [2, {"int32Hint": false}],
+    /****
+     * REACT RULES
+     **/
+    "react/jsx-uses-react" : 2,
+    "react/jsx-uses-vars" : 2,
+    "react/react-in-jsx-scope" : 2
+
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "mocha": true
+  },
+  "extends": "eslint:recommended",
+  "ecmaFeatures": {
+    "jsx": true
+  },
+  "plugins": [
+    "react"
+  ]
+}

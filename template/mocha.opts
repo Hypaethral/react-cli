@@ -1,0 +1,4 @@
+--compilers js:babel/register
+             app/scripts/**/__tests__/*__test.js
+             --recursive
+             --check-leaks
