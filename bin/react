@@ -12,67 +12,67 @@ var ejs = require('ejs');
 // Parse command line options
 
 program
-  .version(pkg.version)
-  .usage("<command> [options]");
+    .version(pkg.version)
+    .usage("<command> [options]");
 
 program
-  .command("new <name>")
-  .description("Generate a new react app boilerplate.")
-  .action(function(name, options) {
+    .command("new <name>")
+    .description("Generate a new react app boilerplate.")
+    .action(function(name, options) {
 
-    var templatePath = path.join(__dirname, '../template');
-    var destinationPath = path.join(process.cwd(), name);
+      var templatePath = path.join(__dirname, '../template');
+      var destinationPath = path.join(process.cwd(), name);
 
-    console.log("Creating " + name + "...");
+      console.log("Creating " + name + "...");
 
-    fs.copy(templatePath, destinationPath, function (err) {
-      if (err){
-        return console.error(err);
-      }
-      console.log('Success!');
+      fs.copy(templatePath, destinationPath, function(err) {
+        if (err) {
+          return console.error(err);
+        }
+        console.log('Success!');
+      });
+
     });
-
-  });
 
 program
-  .command("generate <name> [propName:PropType...]")
-  .option("-l, --skip-lifecycle", "Skip lifecycle method generation")
-  .description("Generate a new react component.")
-  .action(function(name, propDefs) {
-    var props = [];
-    var possibleTypes = {
-      "any": "React.PropTypes.any",
-      "requiredAny": "React.PropTypes.any.isRequired",
-      "func": "React.PropTypes.func",
-      "requiredFunc": "React.PropTypes.func.isRequired",
-      "array": "React.PropTypes.array",
-      "requiredArray": "React.PropTypes.array.isRequired",
-      "bool": "React.PropTypes.bool",
-      "requiredBool": "React.PropTypes.bool.isRequired",
-      "number": "React.PropTypes.number",
-      "requiredNumber": "React.PropTypes.number.isRequired",
-      "object": "React.PropTypes.object",
-      "requiredObject": "React.PropTypes.object.isRequired",
-      "string": "React.PropTypes.string",
-      "requiredString": "React.PropTypes.string.isRequired",
-    };
-    propDefs.forEach(function(propDef) {
-      var nameType = propDef.split(":");
-      props.push({
-        name: nameType[0],
-        type: possibleTypes[nameType[1]]
+    .command("generate <name> [propName:PropType...]")
+    .option("-s, --stateful", "Enable lifecycle method generation")
+    .description("Generate a new react component.")
+    .action(function(name, propDefs) {
+      var props = [];
+      var possibleTypes = {
+        "any": "React.PropTypes.any",
+        "requiredAny": "React.PropTypes.any.isRequired",
+        "func": "React.PropTypes.func",
+        "requiredFunc": "React.PropTypes.func.isRequired",
+        "array": "React.PropTypes.array",
+        "requiredArray": "React.PropTypes.array.isRequired",
+        "bool": "React.PropTypes.bool",
+        "requiredBool": "React.PropTypes.bool.isRequired",
+        "number": "React.PropTypes.number",
+        "requiredNumber": "React.PropTypes.number.isRequired",
+        "object": "React.PropTypes.object",
+        "requiredObject": "React.PropTypes.object.isRequired",
+        "string": "React.PropTypes.string",
+        "requiredString": "React.PropTypes.string.isRequired",
+      };
+      propDefs.forEach(function(propDef) {
+        var nameType = propDef.split(":");
+        props.push({
+          name: nameType[0],
+          type: possibleTypes[nameType[1]]
+        });
+      });
+      var stateful = this.stateful;
+      fs.readFile(path.join(__dirname, "../templates", "component.ejs"), 'utf8', function(err, data) {
+        var component = ejs.render(data, {
+          stateful: stateful,
+          name: name,
+          props: props
+        });
+        fs.writeFile(path.join(name.toLowerCase() + ".jsx"), component);
       });
     });
-    var lifecycle = !this.skipLifecycle;
-    fs.readFile(path.join(__dirname, "../templates", "component.ejs"), 'utf8', function (err, data) {
-      var component = ejs.render(data, {
-        lifecycle: lifecycle,
-        name: name,
-        props: props
-      });
-      fs.writeFile(path.join(process.cwd(), "src/components", name.toLowerCase()+".jsx"), component);
-    });
-  });
 
 // Failsafe that shows the help dialogue if the command is not recognized (`$ react xyz`)
 program.on('*', function(opt) {
