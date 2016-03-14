@@ -3,7 +3,10 @@ module.exports.getConfig = function(type) {
   var isDev = type === 'development';
 
   var config = {
-    entry: './app/main.js',
+    entry: [
+      'babel-polyfill',
+      './app/main.js'
+    ],
     output: {
       path: __dirname,
       filename: 'main.js'
@@ -13,7 +16,12 @@ module.exports.getConfig = function(type) {
       loaders: [{
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
+        loader: 'babel-loader',
+        query: {
+          cacheDirectory: true,
+          presets: ['es2015', 'react', 'stage-3'],
+          plugins: ['syntax-async-functions', 'transform-regenerator', 'transform-runtime']
+        }
       }]
     }
   };
