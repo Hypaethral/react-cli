@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-'use strict';
+var _ = require('lodash');
 
 process.bin = process.title = 'react';
 
@@ -35,10 +35,10 @@ program
     });
 
 program
-    .command("generate <name> [propName:PropType...]")
+    .command("component <name> [path] [propName:PropType...]")
     .option("-s, --stateful", "Enable lifecycle method generation")
-    .description("Generate a new react component.")
-    .action(function(name, propDefs) {
+    .description("Generate a new react component.  Path should point to the exact directory where the component should be made")
+    .action(function(name, pathName, propDefs) {
       var props = [];
       var possibleTypes = {
         "any": "React.PropTypes.any",
@@ -67,10 +67,28 @@ program
       fs.readFile(path.join(__dirname, "../templates", "component.ejs"), 'utf8', function(err, data) {
         var component = ejs.render(data, {
           stateful: stateful,
-          name: name,
+          name: _.capitalize(name),
           props: props
         });
-        fs.writeFile(path.join(name.toLowerCase() + ".jsx"), component);
+        fs.writeFile(path.join(pathName || process.cwd(), _.capitalize(name) + ".jsx"), component);
+      });
+    });
+
+program
+    .command("reflux <name> [path]")
+    .description("Generate a reflux store and action file.  Path should point to the lib directory which houses both the actions and the stores folders")
+    .action(function(name, pathName) {
+      fs.readFile(path.join(__dirname, "../templates", "store.ejs"), 'utf8', function(err, data) {
+        var component = ejs.render(data, {
+          name: _.capitalize(name)
+        });
+        fs.writeFile(path.join(pathName || process.cwd(), '../actions', name.toLowerCase() + "Store.js"), component);
+      });
+      fs.readFile(path.join(__dirname, "../templates", "actions.ejs"), 'utf8', function(err, data) {
+        var component = ejs.render(data, {
+          name: _.capitalize(name)
+        });
+        fs.writeFile(path.join(pathName || process.cwd(), '../stores', name.toLowerCase() + "Actions.js"), component);
       });
     });
 

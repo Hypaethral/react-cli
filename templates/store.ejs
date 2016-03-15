@@ -1,0 +1,17 @@
+import Reflux from 'reflux';
+import _ from 'lodash';
+import cuid from 'cuid';
+//import Utils from $utilsPath; ? //'../../../../../utils.js';
+import <%- name -%>Actions from '../actions/<%- name -%>Actions.js';
+
+const <%- name -%>Store = Reflux.createStore({
+  init: function() {
+    this.listenToMany(<%- name -%>Actions);
+  },
+
+  get<%- name -%>() {
+    return;
+  }
+});
+
+export default <%- name -%>Store;

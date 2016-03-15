@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { Link } from 'react-router';
 
-class <%- name %> extends React.component {
+class <%- name %> extends React.Component {
   constructor(props) {
     super(props);
     <% if (stateful) { %>
@@ -13,11 +13,11 @@ class <%- name %> extends React.component {
   <% if (stateful) { -%>
 
   componentDidMount() {
-    this.unsubscribe = SomeStore.listen(this.onStatusChange.bind(this));
+    //this.unsubscribe = SomeStore.listen(this.onStatusChange.bind(this));
   }
 
   componentWillUnmount() {
-    this.unsubscribe();
+    //this.unsubscribe();
   }
 
   onStatusChange(state) {
