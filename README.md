@@ -3,7 +3,7 @@
 Documenting the preferred project structure and setup for a new javascript payload
 
 ## Getting Started
-#### make the project directory:
+### make the project directory:
 
 ```
 projname/
@@ -21,11 +21,12 @@ projname/
     views/
 ```
 
-#### initialize the project directory as a npm package:
+### initialize the project directory as a npm package:
 
 `npm init`
 
-#### add dependencies to package.json, example below:
+### add dependencies to package.json, example below:
+
 ```
 {
   "name": "projname",
@@ -51,7 +52,7 @@ projname/
 ```
 
 
-#### add webpack.config file, example below:
+### add webpack.config file, example below:
 
 ```
 const path = require('path');
