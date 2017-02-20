@@ -3,7 +3,7 @@
 Documenting the preferred project structure and setup for a new javascript payload
 
 ## Getting Started
-1. make the project directory:
+#### make the project directory:
 
 ```
 projname/
@@ -21,11 +21,11 @@ projname/
     views/
 ```
 
-2. initialize the project directory as a npm package:
+#### initialize the project directory as a npm package:
 
 `npm init`
 
-3. add dependencies to package.json, example below:
+#### add dependencies to package.json, example below:
 ```
 {
   "name": "projname",
@@ -51,7 +51,7 @@ projname/
 ```
 
 
-4. add webpack.config file, example below:
+#### add webpack.config file, example below:
 
 ```
 const path = require('path');
@@ -84,5 +84,5 @@ const config = {
 module.exports = config;
 ```
 
-5. create a gitignore file (dist and .idea are primary candidates)
+#### create a gitignore file (dist and .idea are primary candidates)
 
