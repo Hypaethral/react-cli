@@ -1,87 +1,88 @@
-# react-cli
+# jr-react-cli
 
-A command line interface tool that seeks to automate some tasks when working on a React.js project.
+Documenting the preferred project structure and setup for a new javascript payload
 
 ## Getting Started
-
-Install the react command line tool globally so you can use it from any project directory.
-
-```
-$ npm install -g madebyform/react-cli
-```
-
-## Commands
-
-### Create an Application
+1. make the project directory:
 
 ```
-$ react new my-app
-```
-
-This command sets up a new react application inside the `my-app` directory. This is what you get out of the box:
-
-* [Isomorphic](http://nerds.airbnb.com/isomorphic-javascript-future-web-apps/) Node configuration
-* ES6 support via [babel](https://babeljs.io)
-* Express server + EJS templating system
-* React router configuration
-
-The application will have the following directory structure:
-
-```
-my-app/
+projname/
   assets/
+  dist/
   src/
+    actions/
     components/
+      example-component/
+        example-component.js
+        example-component.styl
+        example-component.test
+    stores/
     utils/
     views/
 ```
 
-### Generate React components
+2. initialize the project directory as a npm package:
+
+`npm init`
+
+3. add dependencies to package.json, example below:
+```
+{
+  "name": "projname",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "webpack --config ./webpack.config.js"
+  },
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-router": "^3.0.2",
+    "reflux": "^6.2.0",
+    "webpack": "2.2.1"
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.0.4",
+    "source-map-loader": "^0.1.6",
+    "typescript": "^2.1.6"
+  }
+}
 
 ```
-$ react generate MyComponent firstProp:string secondProp:requiredObject
-```
 
-This creates a skeleton `mycomponent.jsx` file inside your `src/components` directory.
 
-#### Component Lifecycle methods
-
-By default, the resulting file includes React lifecycle methods, like `componentWillMount`. You can skip these by passing in either `-l` or `--skip-lifecycle` to the command above. To know more run `$ react generate -h`.
-
-#### Property Types
-
-Currently supported property types:
-
-| Optional Props  | Required Props |
-| --------------- | -------------- |
-| any             | requiredAny    |
-| array           | requiredArray  |
-| bool            | requiredBool   |
-| func            | requiredFunc   |
-| number          | requiredNumber |
-| object          | requiredObject |
-| string          | requiredString |
-
-## Usage
-
-Use the `--help` flag for a complete list of options and commands.
+4. add webpack.config file, example below:
 
 ```
-$ react --help
+const path = require('path');
 
-  Usage: react <command> [options]
+const config = {
+  entry: './app.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js'
+  },
+  resolve: {
+    extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
+  },
+  module: {
+    loaders: [
+      // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
+      { test: /\.tsx?$/, loader: "awesome-typescript-loader" }
+    ],
+    preLoaders: [
+      // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+      { test: /\.js$/, loader: "source-map-loader" }
+    ],
+    externals: {
+      "react": "React",
+      "react-dom": "ReactDOM"
+    }
+  }
+};
 
-
-  Commands:
-
-    new <name>                                        Generate a new react app boilerplate.
-    generate [options] <name> [propName:PropType...]  Generate a new react component.
-  Options:
-
-    -h, --help     output usage information
-    -V, --version  output the version number
+module.exports = config;
 ```
 
-## License
+5. create a gitignore file (dist and .idea are primary candidates)
 
-Available under [the MIT license](http://mths.be/mit).
